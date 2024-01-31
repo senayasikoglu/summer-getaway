@@ -24,7 +24,7 @@ class Player {
         this.domElm.style.bottom = this.positionY + "vh";
         
         const img  = document.createElement("img");
-        img.setAttribute("src", '/images/girl.png');
+        img.setAttribute("src", './images/girl.png');
         img.style.width = this.width-1 + "vw"
         img.style.height = this.height-1 + "vh"
 
@@ -76,7 +76,7 @@ class TrueItem{
         this.domElm.style.height = this.height + "vh"
 
         const img  = document.createElement("img");
-        img.setAttribute("src", '/images/falseItems/winter-hat.png');
+        img.setAttribute("src", './images/falseItems/winter-hat.png');
         img.style.width = this.width-1 + "vw"
         img.style.height = this.height-1 + "vh"
 
