@@ -1,6 +1,6 @@
 body {
     background-color:  rgb(235, 166, 114);
-    /*background-image:url('/images/background.jpg');
+    /*background-image:url('../images/background.jpg');
     background-size: cover;
     width: 100%;
     background-attachment: fixed; */  
@@ -11,7 +11,7 @@ body {
     padding: 10;
     position: relative;
     overflow: hidden;
-    background-image:url('/images/background.jpg');
+    background-image:url('../images/background.jpg');
     background-size: cover;
     width: 90%;
     background-attachment: fixed;
@@ -20,8 +20,7 @@ body {
      rgb(248, 227, 211);  // açık
     */
     overflow: hidden;
-
-    background-image: url('/images/background.jpg');
+    background-image: url("../images/background.jpg");
     background-size: cover;
     background-attachment: scroll;
     background-position: center;
