@@ -1,104 +1,5 @@
-class Player {
-
-    constructor() {
-        this.width = 7;
-        this.height = 15;
-        this.positionX = 0;
-        this.positionY = 0;
-        this.domElm = null;
-
-        this.createDomElement();
-
-    }
-    createDomElement() {
-        // create dom element..
-        this.domElm = document.createElement("div");
-
-        // add content or modify
-        this.domElm.setAttribute("id", "player");
-        this.domElm.style.width = this.width + "vw"
-        this.domElm.style.height = this.height + "vh"
-
-        this.domElm.style.left = this.positionX + "vw";
-        this.domElm.style.bottom = this.positionY + "vh";
-
-        const img = document.createElement("img");
-        img.setAttribute("src", "./images/girl.png");
-        img.style.width = this.width - 1 + "vw"
-        img.style.height = this.height - 1 + "vh"
-
-        this.domElm.appendChild(img);
-
-        // append to the dom
-        const boardElm = document.getElementById("board");
-        boardElm.appendChild(this.domElm);
-
-    }
-
-    moveLeft() {
-        if (this.positionX > 0) {
-            this.positionX--;
-            this.domElm.style.left = this.positionX + "vw";
-        }
-    }
-    moveRight() {
-        if (this.positionX + this.width < 50) {
-            this.positionX++;
-            this.domElm.style.left = this.positionX + "vw";
-        }
-    }
-}
-
-
-class FallingItem {
-    constructor(imgPath, itemType) {
-        this.width = 5;
-        this.height = 8;
-        this.positionX = Math.floor(Math.random() * (50 - this.width + 1)); // random number between 0 and (100 - this.width)
-        this.positionY = 100;
-        this.domElm = null;
-        this.imgPath = imgPath;
-        this.itemType = itemType;
-        this.img = null;
-        this.createDomElement();
-    }
-
-    createDomElement() {
-        // create dom element..
-        this.domElm = document.createElement("div");
-
-        // add content or modify
-        this.domElm.setAttribute("class", "fallingItem");
-        this.domElm.style.left = this.positionX + "vw";
-        this.domElm.style.bottom = this.positionY + "vh";
-        this.domElm.style.width = this.width + "vw"
-        this.domElm.style.height = this.height + "vh"
-
-        this.img = document.createElement("img");
-        this.img.setAttribute("src", this.imgPath);
-        this.img.style.width = this.width - 1 + "vw"
-        this.img.style.height = this.height - 1 + "vh"
-
-        this.domElm.appendChild(this.img);
-
-        // append to the dom
-        const boardElm = document.getElementById("board");
-        boardElm.appendChild(this.domElm);
-    }
-
-    moveDown() {
-        this.positionY--;
-        this.domElm.style.bottom = this.positionY + "vh";
-
-    }
-    stop(position) {
-        this.positionY = position;
-        this.domElm.style.bottom = this.positionY + "vh";
-    }
-}
-
-const player = new Player();
 const fallingItemList = [];
+
 const itemsList = [
     {
         imgPath: "./images/trueItems/fins.png",
@@ -159,60 +60,161 @@ const itemsList = [
     {
         imgPath: "./images/falseItems/coat.png",
         itemType: false
+    },
+    {
+        imgPath: "./images/falseItems/jumper.png",
+        itemType: false
+    },
+    {
+        imgPath: "./images/falseItems/boot.png",
+        itemType: false
     }
 
 ];
 
-let points = 0;
+const player = new Player();
+
+
+const boardDiv = document.getElementById("board");
 const pointsDiv = document.getElementById("points");
+const timerDiv = document.getElementById("timer");
+
 const dialogDiv = document.getElementById("dialog");
-
-setInterval(() => {
-    let selectedImgItem = itemsList[Math.floor(Math.random() * itemsList.length)];
-    const newFallingItem = new FallingItem(selectedImgItem.imgPath, selectedImgItem.itemType);
-    fallingItemList.push(newFallingItem);
-
-}, 1500)
-
-collision = setInterval(() => {
-    fallingItemList.forEach((fallingItemInstance) => {
-
-        // 1. move current trueItem
-        fallingItemInstance.moveDown();
-
-        if (player.positionX < fallingItemInstance.positionX + fallingItemInstance.width &&
-            player.positionX + player.width > fallingItemInstance.positionX &&
-            player.positionY < fallingItemInstance.positionY + fallingItemInstance.height &&
-            player.positionY + player.height > fallingItemInstance.positionY) {
-
-            if (!fallingItemInstance.itemType) {
-                console.log("game over");
-                //fallingItemInstance.stop(fallingItemInstance.positionY);
-                clearInterval(collision);
-                dialogDiv.style.display = 'block';
+const startBtn = document.getElementById("start-button");
+const pointsArea = document.getElementById("points-area");
 
 
-                //location.href = "gameover.html";     
-            } else {
-                fallingItemInstance.img.style.display = "none";
-                fallingItemInstance.stop();
-                fallingItemInstance.domElm.remove();
+let timer;
+let collision;
+let points = 0;
 
-                points++;
-                pointsDiv.innerHTML = `<h3> Points: ${points} </h3>`;
+
+startBtn.addEventListener("click", function () {
+    boardDiv.innerHTML = "";
+    startGame();
+    showTimer();
+});
+
+
+function startGame() {
+    player.createDomElement();
+    pointsDiv.style.display = "block";
+    timerDiv.style.display = "block";
+
+
+    setInterval(() => {
+        let selectedImgItem = itemsList[Math.floor(Math.random() * itemsList.length)];
+        const newFallingItem = new FallingItem(selectedImgItem.imgPath, selectedImgItem.itemType);
+        fallingItemList.push(newFallingItem);
+
+    }, 600)
+
+    collision = setInterval(() => {
+        fallingItemList.forEach((fallingItemInstance) => {
+
+            // 1. move current trueItem
+            fallingItemInstance.moveDown();
+
+            if (player.positionX < fallingItemInstance.positionX + fallingItemInstance.width &&
+                player.positionX + player.width > fallingItemInstance.positionX &&
+                player.positionY < fallingItemInstance.positionY + fallingItemInstance.height &&
+                player.positionY + player.height > fallingItemInstance.positionY) {
+
+                if (!fallingItemInstance.itemType) {
+                    clearInterval(collision);
+
+                    gameOver(false);
+                    clearInterval(timer);
+
+                } else {
+                    fallingItemInstance.img.style.display = "none";
+                    fallingItemInstance.stop();
+                    fallingItemInstance.domElm.remove();
+
+                    points += 10;
+
+                    pointsDiv.innerHTML = `<h3> Points: ${points} </h3>`;
+
+                    if (points === 100) {
+
+                        clearInterval(collision);
+                        clearInterval(timer);
+
+                        dialogDiv.innerHTML = ""
+                        dialogDiv.style.width = "30%";
+                        dialogDiv.style.height = "50%";
+
+                        const img = document.createElement("img");
+                        img.setAttribute("src", "./images/bon-voyage.jpg");
+                        img.setAttribute("class", "congratsImg");
+                        img.style.width = "30vw"
+                        img.style.height = "50vh"
+                        dialogDiv.appendChild(img);
+
+
+
+                        const hoverImg = document.createElement("img");
+                        hoverImg.setAttribute("src", "./images/icons8-replay.gif");
+                        hoverImg.setAttribute("class", "replayImg");
+
+                        hoverImg.addEventListener("click", function () {
+                            window.location.reload();
+                        });
+
+                        dialogDiv.style.display = 'block';
+                        setInterval(function () {
+                            dialogDiv.appendChild(hoverImg);
+
+                        }, 2000);
+                    }
+                }
             }
-        }
 
+        });
+
+    }, 50);
+
+    // add event listeners
+    document.addEventListener("keydown", (e) => {
+        if (e.code === 'ArrowLeft') {
+            player.moveLeft();
+        } else if (e.code === 'ArrowRight') {
+            player.moveRight();
+        } else if (e.code === 'ArrowUp') {
+            player.moveUp();
+        } else if (e.code === 'ArrowDown') {
+            player.moveDown();
+        }
     });
 
-}, 100);
+}
 
 
-// add event listeners
-document.addEventListener("keydown", (e) => {
-    if (e.code === 'ArrowLeft') {
-        player.moveLeft();
-    } else if (e.code === 'ArrowRight') {
-        player.moveRight();
-    }
-});
+function gameOver(timeIsUp) {
+    clearInterval(collision);
+    dialogDiv.style.display = 'block';
+    let title = timeIsUp ? `<h2>Time is Up!</h2>` : `<h2>Game Over</h2>`;
+    pointsArea.innerHTML = title + "Score : " + points;
+}
+
+function showTimer() {
+    timer = setInterval(function () {
+        player.timeRemaining--;
+        setTimerArea();
+
+        if (player.timeRemaining === 0) {
+            gameOver(true);
+            clearInterval(timer);
+        }
+    }, 1000);
+
+}
+
+function setTimerArea() {
+    const minutes = Math.floor(player.timeRemaining / 60).toString().padStart(2, "0");
+    const seconds = (player.timeRemaining % 60).toString().padStart(2, "0");
+    timerDiv.innerHTML = `<h3> Timer: ${minutes}:${seconds} </h3>`;
+}
+
+
+

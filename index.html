@@ -1,26 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <h1>Summer Getaway</h1>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Game</title>
+    <title>Summer Getaway</title>
 
     <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
-    <div id="board">  </div>
-    <div id="points"></div>
-    <div id="dialog"> 
 
-        <h1>Game Over</h1>
-            
-        <a href="./index.html">Play again</a>
-        
+<body>
+    <div id="board">
+        <div id="start-page">
+            <div>
+                <img class="start-page-player" src="./images/girl.png">
+            </div>
+            <div class="start-page-content">
+                <div>
+                    <h2>Help the adventurous girl collect <span style="color: #3366ff;"><strong>100</strong></span>
+                        points for a summer getaway!</h2>
+                    <h2>Collect summer items, <span style="color: #ff0000;">avoid</span> winter ones, and use arrows to
+                        control her!</h2>
+                </div>
+
+                <div>
+                    <button id="start-button" class="start-button">START</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <div id="points" class="points">
+            <div>
+                <h3> Points: 0 </h3>
+                
+            </div>
+
+        </div>  
+        <div id="timer" class="timer">
+            <div>
+                <h3> Timer: 00:30 </h3>
+                
+            </div>
+
+        </div> 
+    </ul>
+    <div id="start-game">
+
+    </div>
+    <div id="dialog">
+        <div style="display: flex;flex-direction: column;">
+            <div>
+                
+                <span class="poinst-area" id="points-area"></span>
+            </div>
+            <div>
+                <button onClick="window.location.reload();" class="retry-button">Try Again</button>
+            </div>
+        </div>
+
     </div>
 
-    
-  
+
+
+    <script src="./js/player.js"></script>
+    <script src="./js/fallingItem.js"></script>
     <script src="./js/main.js"></script>
 </body>
+
 </html>

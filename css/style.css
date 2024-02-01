@@ -1,10 +1,7 @@
 body {
-    background-color:  rgb(237, 171, 120);
-    /*background-image:url('../images/background.jpg');
-    background-size: cover;
-    width: 100%;
-    background-attachment: fixed; */  
+    background-color: rgb(237, 171, 120);
 }
+
 #board {
     overflow: hidden;
     background-image: url("../images/background.jpg");
@@ -24,10 +21,63 @@ body {
     border-radius: 20px;
 }
 
+#start-page {
+    display: flex;
+    flex-direction: row;
+}
+
+.start-page-content {
+    margin: 40px;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    border: 3px solid #93451c;
+    border-radius: 20px;
+    background-color: rgb(238, 193, 158);
+}
+
+.start-page-content h2 {
+    text-align: center;
+}
+
+.start-page-player {
+    width: 15vw;
+    height: 35vh;
+    margin: 35px;
+}
+
+.start-button {
+
+    background-color: rgb(201, 33, 18);
+    color: white;
+    border: 10px;
+    border-radius: 20px;
+    padding: 20px 20px;
+    text-align: center;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: 40px;
+    font-weight: bold;
+    box-shadow: 0 9px #999;
+    height: 7vh;
+    width: 10vw;
+
+}
+
+.start-button:hover {
+    background-color: rgb(238, 96, 83);
+}
+
+.start-button:active {
+    background-color: rgb(201, 33, 18);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
 
 #dialog {
     overflow: hidden;
-    background-color:  rgb(201, 33, 18);
+    background-color: rgb(94, 70, 68);
     display: none;
     background-size: cover;
     background-attachment: scroll;
@@ -39,37 +89,122 @@ body {
     left: 0;
     right: 0;
     margin: auto;
-    height: 20%;
+    height: 30%;
     width: 20%;
     border: 10px solid #93451c;
     border-radius: 20px;
+    text-align: center;
 }
+
+#dialog .poinst-area {
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    display: inline-block;
+    color: #ecddcb;
+}
+
+#dialog h2 {
+    text-align: center;
+    font-size: 5vh;
+    font: bolder;
+    color: #ecddcb;
+}
+
+#dialog .retry-button {
+
+    background-color: rgb(201, 33, 18);
+    color: white;
+    border: 10px;
+    border-radius: 20px;
+    text-align: center;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: 25px;
+    padding: 5px;
+    font-weight: bold;
+    box-shadow: 0 9px #999;
+    margin-bottom: 10px;
+
+}
+
+#dialog .retry-button:hover {
+    background-color: rgb(238, 96, 83);
+}
+
+#dialog .retry-button:active {
+    background-color: rgb(201, 33, 18);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
 
 #player {
     position: absolute;
 }
 
-h1{
-    text-align: center; 
+h1 {
+    text-align: center;
     font-size: 7vh;
-    font:bolder;
+    font: bolder;
     color: #ecddcb;
 }
+
+
 /*color: #521c02;  */
 .fallingItem {
     position: absolute;
 }
 
 .points {
-    background-image: url("../images/suitcase.png");
+    display: none;
+    border: 3px solid #93451c;
+    border-radius: 10px;
     position: absolute;
-    background-size: contain;
-    background-position:left;
-    background-repeat: no-repeat;
-    font-size: 4.5vh;
-    text-align:center;
-  }
-  .points h3 {
-      font-size: 1.1em;
-      color: rgb(78, 8, 78);
-  }
+    font-size: 2.0vh;
+    text-align: center;
+    width: 12vw;
+    height: 6vh;
+    left: 2vw;
+    background-color: rgb(238, 193, 158);
+
+}
+
+.points h3 {
+    font-size: 1.1em;
+}
+
+.timer {
+    display: none;
+    border: 3px solid #93451c;
+    border-radius: 10px;
+    position: absolute;
+    font-size: 2.0vh;
+    text-align: center;
+    width: 12vw;
+    height: 6vh;
+    top: 30vh;
+    left: 2vw;
+    background-color: rgb(238, 193, 158);
+}
+
+
+.timer h3 {
+    font-size: 1.1em;
+}
+
+.congratsImg {
+
+    position: relative;
+
+}
+
+.replayImg {
+    position: absolute;
+    justify-content: center;
+    top: 35%;
+    z-index: 10;
+    left: 40%;
+    width: 20%;
+    height: 20%;
+}
