@@ -10,23 +10,22 @@ class Player {
         this.createDomElement();
 
     }
-    createDomElement(){
+    createDomElement() {
         // create dom element..
         this.domElm = document.createElement("div");
-
 
         // add content or modify
         this.domElm.setAttribute("id", "player");
         this.domElm.style.width = this.width + "vw"
         this.domElm.style.height = this.height + "vh"
-        
+
         this.domElm.style.left = this.positionX + "vw";
         this.domElm.style.bottom = this.positionY + "vh";
-        
-        const img  = document.createElement("img");
+
+        const img = document.createElement("img");
         img.setAttribute("src", "./images/girl.png");
-        img.style.width = this.width-1 + "vw"
-        img.style.height = this.height-1 + "vh"
+        img.style.width = this.width - 1 + "vw"
+        img.style.height = this.height - 1 + "vh"
 
         this.domElm.appendChild(img);
 
@@ -43,7 +42,7 @@ class Player {
         }
     }
     moveRight() {
-        if (this.positionX + this.width  < 100) {
+        if (this.positionX + this.width < 50) {
             this.positionX++;
             this.domElm.style.left = this.positionX + "vw";
         }
@@ -51,92 +50,158 @@ class Player {
 }
 
 
-
-class TrueItem{
-    constructor(){
+class FallingItem {
+    constructor(imgPath, itemType) {
         this.width = 5;
         this.height = 8;
         this.positionX = Math.floor(Math.random() * (50 - this.width + 1)); // random number between 0 and (100 - this.width)
         this.positionY = 100;
         this.domElm = null;
- 
+        this.imgPath = imgPath;
+        this.itemType = itemType;
+        this.img = null;
         this.createDomElement();
-
     }
 
-    createDomElement(){
+    createDomElement() {
         // create dom element..
         this.domElm = document.createElement("div");
 
         // add content or modify
-        this.domElm.setAttribute("class", "trueItem");
+        this.domElm.setAttribute("class", "fallingItem");
         this.domElm.style.left = this.positionX + "vw";
         this.domElm.style.bottom = this.positionY + "vh";
         this.domElm.style.width = this.width + "vw"
         this.domElm.style.height = this.height + "vh"
 
-        const img  = document.createElement("img");
-        img.setAttribute("src", "./images/falseItems/winter-hat.png");
-        img.style.width = this.width-1 + "vw"
-        img.style.height = this.height-1 + "vh"
+        this.img = document.createElement("img");
+        this.img.setAttribute("src", this.imgPath);
+        this.img.style.width = this.width - 1 + "vw"
+        this.img.style.height = this.height - 1 + "vh"
 
-        this.domElm.appendChild(img);
+        this.domElm.appendChild(this.img);
 
         // append to the dom
         const boardElm = document.getElementById("board");
         boardElm.appendChild(this.domElm);
-
     }
 
-    moveDown(){
+    moveDown() {
         this.positionY--;
-        this.domElm.style.bottom = this.positionY + "vh"; 
-        
-    }
+        this.domElm.style.bottom = this.positionY + "vh";
 
+    }
+    stop(position) {
+        this.positionY = position;
+        this.domElm.style.bottom = this.positionY + "vh";
+    }
 }
 
-
 const player = new Player();
-const trueItems = [];
-const falseItems = [];
+const fallingItemList = [];
+const itemsList = [
+    {
+        imgPath: "./images/trueItems/fins.png",
+        itemType: true
+    },
+    {
+        imgPath: "./images/trueItems/snorkel.png",
+        itemType: true
+    },
+    {
+        imgPath: "./images/trueItems/flipflops.png",
+        itemType: true
+    },
+    {
+        imgPath: "./images/trueItems/sun.png",
+        itemType: true
+    },
+    {
+        imgPath: "./images/trueItems/summer-hat.png",
+        itemType: true
+    },
+    {
+        imgPath: "./images/trueItems/sunbed.png",
+        itemType: true
+    },
+    {
+        imgPath: "./images/trueItems/sunglasses.png",
+        itemType: true
+    },
+    {
+        imgPath: "./images/trueItems/swim-suit.png",
+        itemType: true
+    },
+    {
+        imgPath: "./images/falseItems/gloves.png",
+        itemType: false
+    },
+    {
+        imgPath: "./images/falseItems/ice-skating-shoes.png",
+        itemType: false
+    },
+    {
+        imgPath: "./images/falseItems/ski.png",
+        itemType: false
+    },
+    {
+        imgPath: "./images/falseItems/snowflake.png",
+        itemType: false
+    },
+    {
+        imgPath: "./images/falseItems/snowman.png",
+        itemType: false
+    },
+    {
+        imgPath: "./images/falseItems/winter-hat.png",
+        itemType: false
+    }
+
+];
+
 let points = 0;
 const pointsDiv = document.getElementById("points");
-
-
- 
-//ben olsam iki farklı array yaparım
-//birinde true itemlar diğerinde false itemlar 
-// bunu yapabilmek için de farklı iki sınıfa ihtiyac var
-setInterval(() => {
-    const newTrueItem = new TrueItem();
-    trueItems.push(newTrueItem);
-    console.log(player);
-
-},2000)
+const dialogDiv = document.getElementById("dialog");
 
 setInterval(() => {
-    trueItems.forEach((trueItemInstance) => {
+    let selectedImgItem = itemsList[Math.floor(Math.random() * itemsList.length)];
+    const newFallingItem = new FallingItem(selectedImgItem.imgPath, selectedImgItem.itemType);
+    fallingItemList.push(newFallingItem);
+
+}, 4000)
+
+collision = setInterval(() => {
+    fallingItemList.forEach((fallingItemInstance) => {
 
         // 1. move current trueItem
-        trueItemInstance.moveDown();
+        fallingItemInstance.moveDown();
 
-        if (player.positionX < trueItemInstance.positionX + trueItemInstance.width &&
-            player.positionX + player.width > trueItemInstance.positionX &&
-            player.positionY < trueItemInstance.positionY + trueItemInstance.height &&
-            player.positionY + player.height > trueItemInstance.positionY) {
-            console.log("game over");
-            location.href = "gameover.html";
+        if (player.positionX < fallingItemInstance.positionX + fallingItemInstance.width &&
+            player.positionX + player.width > fallingItemInstance.positionX &&
+            player.positionY < fallingItemInstance.positionY + fallingItemInstance.height &&
+            player.positionY + player.height > fallingItemInstance.positionY) {
 
-           /* points+= 20;
-            pointsDiv.innerHTML = `<h3> Points: ${points} </h3>`; */
-            
+            if (!fallingItemInstance.itemType) {
+                console.log("game over");
+                //fallingItemInstance.stop(fallingItemInstance.positionY);
+                clearInterval(collision);
+                dialogDiv.style.display = 'block';
+
+
+                //location.href = "gameover.html";     
+            } else {
+                fallingItemInstance.img.style.display = "none";
+                fallingItemInstance.stop();
+                fallingItemInstance.domElm.remove();
+
+                points++;
+                pointsDiv.innerHTML = `<h3> Points: ${points} </h3>`;
+            }
         }
 
     });
 
-},100);
-
+}, 100);
 
 
 // add event listeners
@@ -147,17 +212,3 @@ document.addEventListener("keydown", (e) => {
         player.moveRight();
     }
 });
-//document.body.style.backgroundImage = "url('/Users/senayasikoglu/Downloads/vecteezy_gradient-happy-summer-background-with-beach_7718046_849/vecteezy_gradient-happy-summer-background-with-beach_7718046.jpg')";
-
-
-//console.log("hello");
-
-/*
-body {
-  background-image: url('/Users/senayasikoglu/Downloads/vecteezy_gradient-happy-summer-background-with-beach_7718046_849/vecteezy_gradient-happy-summer-background-with-beach_7718046.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}
-
-*/
