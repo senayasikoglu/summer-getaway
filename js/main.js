@@ -168,7 +168,7 @@ setInterval(() => {
     const newFallingItem = new FallingItem(selectedImgItem.imgPath, selectedImgItem.itemType);
     fallingItemList.push(newFallingItem);
 
-}, 4000)
+}, 1500)
 
 collision = setInterval(() => {
     fallingItemList.forEach((fallingItemInstance) => {
