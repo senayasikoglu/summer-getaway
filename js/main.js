@@ -155,6 +155,10 @@ const itemsList = [
     {
         imgPath: "./images/falseItems/winter-hat.png",
         itemType: false
+    },
+    {
+        imgPath: "./images/falseItems/coat.png",
+        itemType: false
     }
 
 ];
